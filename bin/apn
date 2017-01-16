@@ -32,6 +32,7 @@ command :push do |c|
   c.option '-e', '--environment ENV', [:production, :development], 'Environment to send push notification (production or development (default))'
   c.option '-c', '--certificate CERTIFICATE', 'Path to certificate (.pem) file'
   c.option '-p', '--[no]-passphrase', 'Prompt for a certificate passphrase'
+  c.option '-M', '--mutable-content', 'Indicates the notification will have mutable content'
 
   c.action do |args, options|
     say_error "One or more device tokens required" and abort if args.empty?
@@ -50,6 +51,7 @@ command :push do |c|
     @sound = options.sound
     @category = options.category
     @content_available = !!options.newsstand
+    @mutable_content = options.mutable_content
 
     if options.payload
       begin
@@ -80,6 +82,7 @@ command :push do |c|
       notification.sound = @sound if @sound
       notification.category = @category if @category
       notification.content_available = @content_available if @content_available
+      notification.mutable_content = @mutable_content if @mutable_content
 
       @notifications << notification
     end
